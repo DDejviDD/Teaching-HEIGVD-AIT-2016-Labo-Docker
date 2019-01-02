@@ -7,7 +7,6 @@
 ---  
 
 ## Table of content
-[TOC]
 1. [Introduction](#intro)
 2. [Identify issues and install the tools](#task-0)
 3. [Add a process supervisor to run several processes](#task-1)
@@ -49,7 +48,7 @@ What happens if we add more web server nodes? Do you think it is really dynamic?
 1. Take a screenshot of the stats page of HAProxy at <http://192.168.42.42:1936>. You should see your backend nodes.
 ![stats page](img/Task-0-D-1.png)
 2. Give the URL of your repository URL in the lab report.
-The [URL](https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker) of our repository.
+The [URL](https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker "https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker") of our repository.
 
 
 ## <a name="task-1"></a>Task 1: Add a process supervisor to run several processes
