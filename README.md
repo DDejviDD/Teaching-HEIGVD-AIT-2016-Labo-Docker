@@ -861,8 +861,7 @@ You will notice the following in the logs (or something similar).
 This means that our nodes are not joining the `Serf` cluster and more important
 cannot resolve the DNS names of the nodes.
 
-You can do a simple experiment to see yourself that there is no name resolution.
-Connect to a container and run a ping command.
+You can do a simple experiment to see yourself that there is no name resolution. Connect to a container and run a ping command.
 
 ```bash
 # From Vagrant VM
