@@ -1,3 +1,15 @@
+
+dejvi@DESKTOP-DU937JQ MINGW64 ~/Documents/HEIG/S5/AIT/Labo/Teaching-HEIGVD-AIT-2016-Labo-Docker (master)
+$ vagrant ssh
+Welcome to Ubuntu 14.04 LTS (GNU/Linux 3.13.0-24-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com/
+New release '16.04.5 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+Last login: Fri Jan  4 21:22:19 2019 from 10.0.2.2
+vagrant@ubuntu-14:~$ docker exec -ti ha /bin/bash
+root@36de23025223:/# cat /usr/local/etc/haproxy/haproxy.cfg
 # Global configuration for HAProxy
 # http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#3
 global
@@ -107,11 +119,12 @@ backend nodes
     # Define the list of nodes to be in the balancing mechanism
     # http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-server
     # HANDLEBARS START
-    {{#each addresses}}
-    server {{ host }} {{ ip }}:3000 check
-    {{/each}}
+
+    server 5470ad8ab7b2 172.18.0.3:3000 check
+
     # HANDLEBARS END
 
 # Other links you will need later for this lab
 #
 # About cookies: http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-cookie
+root@36de23025223:/#

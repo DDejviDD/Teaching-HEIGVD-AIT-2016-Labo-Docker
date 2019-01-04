@@ -129,16 +129,10 @@ All the logs are under the log directory for this task *../logs/task3*.
    should also try to avoid as much as possible repetitions between
    your images.
 
-3. Provide the `/tmp/haproxy.cfg` file generated in the `ha` container
-   after each step.  Place the output into the `logs` folder like you
-   already did for the Docker logs in the previous tasks. Three files
-   are expected.
-   
-   In addition, provide a log file containing the output of the 
-   `docker ps` console and another file (per container) with
-   `docker inspect <container>`. Four files are expected.
+3. Provide the `/tmp/haproxy.cfg` file generated in the `ha` container after each step.  Place the output into the `logs` folder like you already did for the Docker logs in the previous tasks. Three files are expected. In addition, provide a log file containing the output of the `docker ps` console and another file (per container) with `docker inspect <container>`. Four files are expected.
    
 4. Based on the three output files you have collected, what can you say about the way we generate it? What is the problem if any?
+
 We just read the /tmp/haproxy.cfg file but there's only one line in it, if we start a lot of container we have to read it manually for each of them between every container.
 
 
@@ -147,22 +141,11 @@ We just read the /tmp/haproxy.cfg file but there's only one line in it, if we st
 
 **Deliverables**:
 
-1. Provide the file `/usr/local/etc/haproxy/haproxy.cfg` generated in
-   the `ha` container after each step. Three files are expected.
-   
-   In addition, provide a log file containing the output of the 
-   `docker ps` console and another file (per container) with
-   `docker inspect <container>`. Four files are expected.
+1. Provide the file `/usr/local/etc/haproxy/haproxy.cfg` generated in the `ha` container after each step. Three files are expected. In addition, provide a log file containing the output of the `docker ps` console and another file (per container) with `docker inspect <container>`. Four files are expected.
 
-2. Provide the list of files from the `/nodes` folder inside the `ha` container.
-   One file expected with the command output.
+2. Provide the list of files from the `/nodes` folder inside the `ha` container. One file expected with the command output.
 
-3. Provide the configuration file after you stopped one container and
-   the list of nodes present in the `/nodes` folder. One file expected
-   with the command output. Two files are expected.
-   
-    In addition, provide a log file containing the output of the 
-   `docker ps` console. One file expected.
+3. Provide the configuration file after you stopped one container and the list of nodes present in the `/nodes` folder. One file expected with the command output. Two files are expected. In addition, provide a log file containing the output of the `docker ps` console. One file expected.
 
 4. (Optional:) Propose a different approach to manage the list of backend
    nodes. You do not need to implement it. You can also propose your
