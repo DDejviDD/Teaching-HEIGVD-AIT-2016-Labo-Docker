@@ -171,6 +171,46 @@ We just read the /tmp/haproxy.cfg file but there's only one line in it, if we st
    references to your readings for the improvements.
 
 3. (Optional:) Present a live demo where you add and remove a backend container.
+```bash
+
+# Start everything
+vagrant up
+vagrant ssh
+
+# Clean it
+docker stop $(docker ps -q)
+docker rm $(docker ps -aq)
+docker rmi softengheigvd/ha:latest softengheigvd/webapp:latest
+
+# Configure the subnet heig
+docker network create --driver bridge heig
+
+# Build the new images
+cd /vagrant/ha
+docker build -t softengheigvd/ha .
+cd /vagrant/webapp
+docker build -t softengheigvd/webapp .
+
+# To start the proxy
+docker run -d -p 80:80 -p 1936:1936 -p 9999:9999 --network heig --name ha softengheigvd/ha
+
+# To start the backend nodes
+docker run -d --network heig --name s1 softengheigvd/webapp
+docker run -d --network heig --name s2 softengheigvd/webapp
+docker run -d --network heig --name sx softengheigvd/webapp
+
+# To check...
+# the node list
+docker exec -ti ha /bin/bash
+ls -la /nodes
+# the ha config file
+docker exec -ti ha /bin/bash
+cat /usr/local/etc/haproxy/haproxy.cfg
+```
+
+The [webapp](http://192.168.42.42), the [stat page](http://192.168.42.42:1936).
+
+
 
 ## <a name="difficulties"></a>Difficulties
 
