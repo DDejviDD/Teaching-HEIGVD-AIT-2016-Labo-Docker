@@ -138,8 +138,9 @@ All the logs are under the log directory for this task *../logs/task3*.
    `docker ps` console and another file (per container) with
    `docker inspect <container>`. Four files are expected.
    
-4. Based on the three output files you have collected, what can you
-   say about the way we generate it? What is the problem if any?
+4. Based on the three output files you have collected, what can you say about the way we generate it? What is the problem if any?
+We just read the /tmp/haproxy.cfg file but there's only one line in it, if we start a lot of container we have to read it manually for each of them between every container.
+
 
 
 ## <a name="task-5"></a>Task 5: Generate a new load balancer configuration when membership changes
