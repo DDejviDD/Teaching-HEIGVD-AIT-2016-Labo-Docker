@@ -92,12 +92,10 @@ The [URL](https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker "http
 
 **Deliverables**:
 
-1. Provide the docker log output for each of the containers:  `ha`, `s1` and `s2`.
-   Put your logs in the `logs` directory you created in the previous task.
+1. Provide the docker log output for each of the containers:  `ha`, `s1` and `s2`. Put your logs in the `logs` directory you created in the previous task.
+3. Provide the logs from the `ha` container gathered directly from the `/var/log/serf.log` file present in the container. Put the logs in the `logs` directory in your repo.
 
-3. Provide the logs from the `ha` container gathered directly from the `/var/log/serf.log`
-   file present in the container. Put the logs in the `logs` directory in your repo.
-
+All the logs are under the log directory for this task *../logs/task3*.
 
 ## <a name="task-4"></a>Task 4: Use a template engine to easily generate configuration files
 
@@ -191,4 +189,13 @@ The [URL](https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker "http
 3. (Optional:) Present a live demo where you add and remove a backend container.
 
 ## <a name="difficulties"></a>Difficulties
+
+**Cleanup**: need to change the dockerfile to not copy the scripts
+
+  - As we have changed the way we start our reverse proxy and web application, we can remove the original `run.sh` scripts. You can use the following commands to clean these two files (and folder in case of web application).   ```bash
+  rm /vagrant/ha/scripts/run.sh
+  rm -r /vagrant/webapp/scripts
+  ```
+
+
 ## <a name="conclusion"></a>Conclusion

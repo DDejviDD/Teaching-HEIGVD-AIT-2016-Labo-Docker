@@ -28,10 +28,6 @@ RUN mkdir /opt/bin \
 COPY services/node /etc/services.d/node
 RUN chmod +x /etc/services.d/node/run
 
-# Copy the starting script and make it executable
-COPY scripts /scripts/
-RUN chmod +x /scripts/*.sh
-
 # Copy the Serf agent and make the run script executable
 COPY services/serf /etc/services.d/serf
 RUN chmod +x /etc/services.d/serf/run
@@ -50,6 +46,3 @@ ENV ROLE backend
 
 # This will start S6 as our main process in our container
 ENTRYPOINT ["/init"]
-
-# Command executed when the container starts
-# CMD [ "/scripts/run.sh" ]
