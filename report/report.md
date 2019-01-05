@@ -34,15 +34,56 @@ In this lab, we will go through one possible approach to manage a scalable infra
 
 
 ## <a name="task-0"></a>Task 0: Identify issues and install the tools
-1. <a name="M1"></a>**[M1]** Do you think we can use the current solution for a production environment? What are the main problems when deploying it in a production environment?
-2. <a name="M2"></a>**[M2]** Describe what you need to do to add new `webapp` container to the infrastructure. Give the exact steps of what you have to do without modifiying the way the things are done. Hint: You probably have to modify some configuration and script files in a Docker image.
-3. <a name="M3"></a>**[M3]** Based on your previous answers, you have detected some issues in the current solution. Now propose a better approach at a high level.
-4. <a name="M4"></a>**[M4]** You probably noticed that the list of web application nodes is hardcoded in the load balancer configuration. How can we manage the web app nodes in a more dynamic fashion?
+1. <a name="M1"></a>**[M1]** Do you think we can use the current solution for a production environment? What are the main problems when deploying it in a production environment?  
+
+No. The problem is that you have to declare all the servers manually in the config files. Everytime a server is added or removed, the files must be manually edited wich take time and work. Furthermore, since the config files are edited, for the changes to take effect, the images must be rebuild after the modifications.
+2. <a name="M2"></a>**[M2]** Describe what you need to do to add new `webapp` container to the infrastructure. Give the exact steps of what you have to do without modifiying the way the things are done. Hint: You probably have to modify some configuration and script files in a Docker image.  
+
+The following lines must be added in the correct files:  
+In the ``hapoxy.cfg`` file:
+```
+server s3 <s3>:3000 check
+```
+This line add a new node to the balancing mechanism list.  
+In the ``run.sh `` file:
+```
+sed -i 's/<s3>/$S3_PORT_3000_TCP_ADDR/g' /usr/local/etc/haproxy/haproxy.cfg
+```
+In the ``provision.sh`` file, the following line :   
+```
+docker run -d -p 80:80 -p 1936:1936 -p 9999:9999 --link s1 --link s2
+--name ha softengheigvd/ha
+```
+must be changed so that the ports of the new node are also linked. So the line become:
+```
+docker run -d -p 80:80 -p 1936:1936 -p 9999:9999 --link s1 --link s2 --link s3
+ --name ha softengheigvd/ha
+```  
+Always in the same file:  
+```
+docker rm -f s3 2>/dev/null || true
+docker run -d --name s3 softengheigvd/webapp
+```
+This line run the new webapp.  
+After all the changes are done, the images must be rebuild so the changes are effectives.
+
+3. <a name="M3"></a>**[M3]** Based on your previous answers, you have detected some issues in the current solution. Now propose a better approach at a high level.  
+
+The ideal solution would be to have a programm that is always running and that, everytime a node is added or removed, edit the files above by adding or removing the lines mentionned in M2.
+4. <a name="M4"></a>**[M4]** You probably noticed that the list of web application nodes is hardcoded in the load balancer configuration. How can we manage the web app nodes in a more dynamic fashion?  
+
+Using the above proposition which is: having a programm monitoring the nodes and changing the files when a change occures. In this lab, we will be using is ``Serf`` which is a cluster management tool. Each container have a ``Serf`` agent running and are communicating with each others, sending informations about the nodes and their ip addresses. This allow the load balancer to know when a change happens (a node appearing or disappearing for example) and thus, modify the files accordingly.  
+
 5. <a name="M5"></a>**[M5]** In the physical or virtual machines of a typical infrastructure we tend to have not only one main process (like the web server or the load balancer) running, but a few additional processes on the side to perform management tasks.
 For example to monitor the distributed system as a whole it is common to collect in one centralized place all the logs produced by the different machines. Therefore we need a process running on each machine that will forward the logs to the central place. (We could also imagine a central tool that reaches out to each machine to gather the logs. That's a push vs. pull problem.) It is quite common to see a push mechanism used for this kind of task.
-Do you think our current solution is able to run additional management processes beside the main web server / load balancer process in a container? If no, what is missing / required to reach the goal? If yes, how to proceed to run for example a log forwarding process?
+Do you think our current solution is able to run additional management processes beside the main web server / load balancer process in a container? If no, what is missing / required to reach the goal? If yes, how to proceed to run for example a log forwarding process?  
+
+No. Currently, only one process is runned in each container. When this process is finished, the container dies. We need to have multiple processes running in the same container. To do this, we will need to add a process supervisor to each container. In this lab, we will use ``S6`` which will give us the possibility to run one or more processes at a time in a Docker container.  
+
 6. <a name="M6"></a>**[M6]** In our current solution, although the load balancer configuration is changing dynamically, it doesn't follow dynamically the configuration of our distributed system when web servers are added or removed. If we take a closer look at the `run.sh` script, we see two calls to `sed` which will replace two lines in the `haproxy.cfg` configuration file just before we start `haproxy`. You clearly see that the configuration file has two lines and the script will replace these two lines.
 What happens if we add more web server nodes? Do you think it is really dynamic? It's far away from being a dynamic configuration. Can you propose a solution to solve this?  
+
+When a new nodes is added, we need to generate a new conf file for the node balancer. In the current solution, this has to be done manually so it is not dynamic at all. The solution that will be used in this lab is to use templates. To generate the config files, the templates use the datas provided by the ``Serf`` agents.
 
 **Deliverables**:
 1. Take a screenshot of the stats page of HAProxy at <http://192.168.42.42:1936>. You should see your backend nodes.
@@ -130,7 +171,7 @@ All the logs are under the log directory for this task *../logs/task3*.
    your images.
 
 3. Provide the `/tmp/haproxy.cfg` file generated in the `ha` container after each step.  Place the output into the `logs` folder like you already did for the Docker logs in the previous tasks. Three files are expected. In addition, provide a log file containing the output of the `docker ps` console and another file (per container) with `docker inspect <container>`. Four files are expected.
-   
+
 4. Based on the three output files you have collected, what can you say about the way we generate it? What is the problem if any?
 
 We just read the /tmp/haproxy.cfg file but there's only one line in it, if we start a lot of container we have to read it manually for each of them between every container.
@@ -161,11 +202,11 @@ We just read the /tmp/haproxy.cfg file but there's only one line in it, if we st
    applications running. Additional screenshots are welcome to see a
    sequence of experimentations like shutting down a node and starting
    more nodes.
-   
-   Also provide the output of `docker ps` in a log file. At least 
+
+   Also provide the output of `docker ps` in a log file. At least
    one file is expected. You can provide one output per step of your
    experimentation according to your screenshots.
-   
+
 2. Give your own feelings about the final solution. Propose
    improvements or ways to do the things differently. If any, provide
    references to your readings for the improvements.
