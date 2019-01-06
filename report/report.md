@@ -309,11 +309,10 @@ The [URL](https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker "http
     And we will show the changes in the [webapp](http://192.168.42.42) and the [stat page](http://192.168.42.42:1936).
 
 
-
 ## <a name="difficulties"></a>Difficulties
 The only difficulties encountered during the lab were in understanding the instructions, or fixing the mistakes we had made before.
 For example, during the **cleanup** after the task 2, we removed the files but forgot to edit the `dockerfile` for the webapp to not load the old scripts it took us some time to notice it and correct this mistake.
 Other than that, we didn't really have troubles to complete the lab.
 
-
 ## <a name="conclusion"></a>Conclusion
+In this lab, we learnt how to configure a vagrant workbench, a docker image and ha proxy. It was really interesting to set an infrastructure from a static environment to a fully dynamic one. We discovered some new tools like `s6` and `serf`. During this lab we were able to look by ourself on the net to see how the tools worked, it was laborious because we had to filter the informations or to adapt them to our problematic as we can do pretty much anything with these a lot of different tools that we will not use during the lab.
