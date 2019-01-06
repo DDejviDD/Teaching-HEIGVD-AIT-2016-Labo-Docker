@@ -311,13 +311,9 @@ The [URL](https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker "http
 
 
 ## <a name="difficulties"></a>Difficulties
-
-**Cleanup**: need to change the dockerfile to not copy the scripts
-
-  - As we have changed the way we start our reverse proxy and web application, we can remove the original `run.sh` scripts. You can use the following commands to clean these two files (and folder in case of web application).   ```bash
-  rm /vagrant/ha/scripts/run.sh
-  rm -r /vagrant/webapp/scripts
-  ```
+The only difficulties encountered during the lab were in understanding the instructions, or fixing the mistakes we had made before.
+For example, during the **cleanup** after the task 2, we removed the files but forgot to edit the `dockerfile` for the webapp to not load the old scripts it took us some time to notice it and correct this mistake.
+Other than that, we didn't really have troubles to complete the lab.
 
 
 ## <a name="conclusion"></a>Conclusion
