@@ -20,8 +20,7 @@
 
 
 ## <a name="intro"></a>Introduction
-blablabla
-
+The goal of this lab is to take the node balancer used in the previous one and upgrade it so that it can detect automatically when the number of nodes changes. To do so, we will have to add a process supervisor to our containers, add a tool that react to changes and find a way to edit automatically the config files when a change occures. In the end, we should have a fully functionnal and automatic load balancer using Docker containers.  
 **Remarks**
 The version of HAProxy used in this lab is `1.5`. When reading the documentation, make sure you are looking at this version. Here is the link: <http://cbonte.github.io/haproxy-dconv/configuration-1.5.html>
 
@@ -238,7 +237,7 @@ The [URL](https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker "http
     The output of the `docker ps` console once we stopped one container is in :
     - `/logs/task5/10-docker_ps-stop_s1`
 
-      
+
 4. **(Optional:) Propose a different approach to manage the list of backend nodes. You do not need to implement it. You can also propose your own tools or the ones you discovered online. In that case, do not forget to cite your references.**
 
 ## <a name="task-6"></a>Task 6: Make the load balancer automatically reload the new configuration
@@ -266,7 +265,7 @@ The [URL](https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker "http
     ![web app](img/Task-6-D-1_4-webapp-s4_start.png)
 
     During this process, we could see that the proxy was able to manage the nodes even if we start or stop some nodes, everything was automatic but it takes a small amount of time to do it, something like 1 or 2 seconds.
-    
+
 2. **Give your own feelings about the final solution. Propose improvements or ways to do the things differently. If any, provide references to your readings for the improvements.**
 
 3. **(Optional:) Present a live demo where you add and remove a backend container.**
