@@ -98,7 +98,10 @@ The [URL](https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker "http
 1. Take a screenshot of the stats page of HAProxy at <http://192.168.42.42:1936>. You should see your backend nodes. It should be really similar to the screenshot of the previous task.
 ![stats page](img/Task-1-D-1.png)
 
-2. Describe your difficulties for this task and your understanding of what is happening during this task. Explain in your own words why are we installing a process supervisor. Do not hesitate to do more research and to find more articles on that topic to illustrate the problem.
+2. Describe your difficulties for this task and your understanding of what is happening during this task. Explain in your own words why are we installing a process supervisor. Do not hesitate to do more research and to find more articles on that topic to illustrate the problem.  
+
+We had no particular difficulties in this task.  
+The goal this task is to allow our container to run more than one process by adding a process supervisor to the images. This supervisor allow a container to run multiple processes and prevent the death of the container upon process' completion (which is the base behavoior of containers and the philosophy of Docker). The process supervisor that we use in this lab is ``S6-overlay``.
 
 
 ## <a name="task-2"></a>Task 2: Add a tool to manage membership in the web server cluster
@@ -126,7 +129,13 @@ The [URL](https://github.com/DDejviDD/Teaching-HEIGVD-AIT-2016-Labo-Docker "http
 3. Give an explanation on how `Serf` is working. Read the official
    website to get more details about the `GOSSIP` protocol used in
    `Serf`. Try to find other solutions that can be used to solve
-   similar situations where we need some auto-discovery mechanism.
+   similar situations where we need some auto-discovery mechanism.  
+
+  ``Serf`` is a tool for cluster management. It create a cluster with every nodes and allow them to speak with each others. To do so, every node has a ``Serf agent`` that communicate with the others, informing them of it's status. This allows all the nodes to be notified when a new node arrives or one of the existing one is leaving the cluser.  
+  ``Serf`` can automatically detect failed nodes within seconds, notify the rest of the cluster and execute custom handler scripts allowing to handle those events (failed nodes or membership changes). The tool is also able to broadcast custom events and queries for the cluster (can be used to trigger deploy, propagate configuration, ...).  
+  ``GOSSIP`` is the communication protocol used by ``Serf``. It use the UDP protocol to send messages between nodes.  
+  Source: https://www.serf.io/intro/index.html
+
 
 
 ## <a name="task-3"></a>Task 3: React to membership changes
