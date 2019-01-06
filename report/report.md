@@ -178,7 +178,7 @@ All the logs are under the log directory for this task *../logs/task3*.
 In the older version of Docker, each time you the ``RUN`` command is used, a layer is created. It is preferable to have a minimal number of layer in an image to reduce it size. By chaining the commands, the number of layers is greatly reduce which improve the image building speed.  
 On the other hand, chaining commands make the Dockerfile very hard to read and, because of this, hard to reused in the future.  
 The advantage of multiple ``RUN`` is that, if your layers will be used in other images, the caching mechanism can be used.  
-Since the version 17.05 of Docker, the best practice is to keep the dockerfile readable and use multistage builds to keep the number of layers as low as possible.
+Since the version 17.05 of Docker, the best practice is to keep the dockerfile readable and use multistage builds to keep the number of layers as low as possible.  
 Source: https://stackoverflow.com/questions/39223249/multiple-run-vs-single-chained-run-in-dockerfile-what-is-better
 
   There are also some articles about techniques to reduce the image
@@ -190,7 +190,10 @@ Source: https://stackoverflow.com/questions/39223249/multiple-run-vs-single-chai
 2. Propose a different approach to architecture our images to be able
    to reuse as much as possible what we have done. Your proposition
    should also try to avoid as much as possible repetitions between
-   your images.
+   your images.  
+
+   To reuse the layers as much as possible, the caching mechanism must be used. To do so, the parts that are used in multiple images must have their separate ``RUN`` command so that Docker can cache and re-use them.  
+   The other commands should be chained so that the number of layers is minimal which reduce the size of the images and reduce their build speed.
 
 3. Provide the `/tmp/haproxy.cfg` file generated in the `ha` container after each step.  Place the output into the `logs` folder like you already did for the Docker logs in the previous tasks. Three files are expected. In addition, provide a log file containing the output of the `docker ps` console and another file (per container) with `docker inspect <container>`. Four files are expected.
 
