@@ -193,13 +193,13 @@ Source: https://stackoverflow.com/questions/39223249/multiple-run-vs-single-chai
    your images.  
 
    To reuse the layers as much as possible, the caching mechanism must be used. To do so, the parts that are used in multiple images must have their separate ``RUN`` command so that Docker can cache and re-use them.  
-   The other commands should be chained so that the number of layers is minimal which reduce the size of the images and reduce their build speed.
+   The other commands should be chained so that the number of layers is minimal which reduce the size of the images and reduce their build spe
 
 3. Provide the `/tmp/haproxy.cfg` file generated in the `ha` container after each step.  Place the output into the `logs` folder like you already did for the Docker logs in the previous tasks. Three files are expected. In addition, provide a log file containing the output of the `docker ps` console and another file (per container) with `docker inspect <container>`. Four files are expected.
 
 4. Based on the three output files you have collected, what can you say about the way we generate it? What is the problem if any?
 
-We just read the /tmp/haproxy.cfg file but there's only one line in it, if we start a lot of container we have to read it manually for each of them between every container.
+Each time a node join the cluster, the content of this file is overwritten. The only information in it is the id and the ip of the last node added. The new data should be added at the end of the file instead of writing over existing data.
 
 
 
