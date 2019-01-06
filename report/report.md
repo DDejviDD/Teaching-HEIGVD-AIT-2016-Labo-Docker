@@ -133,7 +133,13 @@ The goal this task is to allow our container to run more than one process by add
 
   ``Serf`` is a tool for cluster management. It create a cluster with every nodes and allow them to speak with each others. To do so, every node has a ``Serf agent`` that communicate with the others, informing them of it's status. This allows all the nodes to be notified when a new node arrives or one of the existing one is leaving the cluser.  
   ``Serf`` can automatically detect failed nodes within seconds, notify the rest of the cluster and execute custom handler scripts allowing to handle those events (failed nodes or membership changes). The tool is also able to broadcast custom events and queries for the cluster (can be used to trigger deploy, propagate configuration, ...).  
-  ``GOSSIP`` is the communication protocol used by ``Serf``. It use the UDP protocol to send messages between nodes.  
+  ``GOSSIP`` is the communication protocol used by ``Serf``. It use the UDP protocol to broadcast messages in the cluster. This protocol solve the three major problems that ``Serf`` encounter which are: Membership, Failure detection and recovery and Custom event propagation.  
+
+  Other solutions:
+  - Apache ZooKeeper
+  - Consul
+
+
   Source: https://www.serf.io/intro/index.html
 
 
@@ -169,10 +175,17 @@ All the logs are under the log directory for this task *../logs/task3*.
   ```
   RUN command 1 && command 2 && command 3
   ```
+In the older version of Docker, each time you the ``RUN`` command is used, a layer is created. It is preferable to have a minimal number of layer in an image to reduce it size. By chaining the commands, the number of layers is greatly reduce which improve the image building speed.  
+On the other hand, chaining commands make the Dockerfile very hard to read and, because of this, hard to reused in the future.  
+The advantage of multiple ``RUN`` is that, if your layers will be used in other images, the caching mechanism can be used.  
+Since the version 17.05 of Docker, the best practice is to keep the dockerfile readable and use multistage builds to keep the number of layers as low as possible.
+Source: https://stackoverflow.com/questions/39223249/multiple-run-vs-single-chained-run-in-dockerfile-what-is-better
 
   There are also some articles about techniques to reduce the image
   size. Try to find them. They are talking about `squashing` or
-  `flattening` images.
+  `flattening` images.  
+  - http://jasonwilder.com/blog/2014/08/19/squashing-docker-images/
+  - https://tuhrig.de/flatten-a-docker-container-or-image/
 
 2. Propose a different approach to architecture our images to be able
    to reuse as much as possible what we have done. Your proposition
